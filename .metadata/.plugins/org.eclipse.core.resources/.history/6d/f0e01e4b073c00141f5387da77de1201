@@ -1,0 +1,172 @@
+package com.nnp.webike;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+public class RegisterFragment extends Fragment implements View.OnClickListener {
+	EditText comboET, descET;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.register_fragment, container,
+				false);
+		return view;
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		Button okBtn = (Button) view.findViewById(R.id.register_ok);
+		Button cancelBtn = (Button) view.findViewById(R.id.register_cancel);
+
+		comboET = (EditText) view.findViewById(R.id.register_combo);
+		descET = (EditText) view.findViewById(R.id.register_description);
+
+		okBtn.setOnClickListener(this);
+		cancelBtn.setOnClickListener(this);
+
+		super.onViewCreated(view, savedInstanceState);
+	}
+
+	class RegisterTask extends AsyncTask<URL, Void, Void> {
+
+		@Override
+		protected Void doInBackground(URL... params) {
+			HttpGet httpGet = new HttpGet(params[0].toString());
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response;
+			StringBuilder stringBuilder = new StringBuilder();
+
+			try {
+				response = client.execute(httpGet);
+				HttpEntity entity = response.getEntity();
+				InputStream stream = entity.getContent();
+				int b;
+				while ((b = stream.read()) != -1) {
+					stringBuilder.append((char) b);
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			getActivity().getSupportFragmentManager().popBackStack();
+			getActivity().getSupportFragmentManager().beginTransaction()
+					.replace(R.id.frag_window, new MenuFragment())
+					.addToBackStack(null).commit();
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setTitle("Bike Registration").setMessage("Success!")
+					.setCancelable(false);
+
+			builder.setPositiveButton("OK",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.dismiss();
+						}
+					});
+
+			AlertDialog alert = builder.create();
+			super.onPostExecute(result);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.register_cancel:
+			getActivity().getSupportFragmentManager().popBackStack();
+			getActivity().getSupportFragmentManager().beginTransaction()
+					.replace(R.id.frag_window, new MenuFragment())
+					.addToBackStack(null).commit();
+			break;
+		case R.id.register_ok:
+			Location l = ((MainActivity)getActivity()).getLocation();
+			try {
+				URL url = new URL(
+						"http://ec2-54-68-186-161.us-west-2.compute.amazonaws.com/register.php?combo="
+								+ URLEncoder.encode(comboET.getText().toString())
+								+ "&locationx="
+								+ l.getLatitude()
+								+ "&locationy="
+								+ l.getLongitude()
+								+ "&user=" + Data.email
+								+ "&description="
+								+ URLEncoder
+										.encode(descET.getText().toString()));
+				new RegisterTask().execute(url);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		case R.id.selectimage:
+			Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent,
+                    "Select Picture"), SELECT_PICTURE);
+
+
+
+		}
+
+	}
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+			MainActivity activity = (MainActivity)getActivity(); 
+			Bitmap bitmap = getBitmapFromCameraData(data, activity); 
+			ImageView mSelectedImage = new ImageView(getActivity());
+			mSelectedImage.setImageBitmap(bitmap); 
+		} 
+	}
+	
+	public static Bitmap getBitmapFromCameraData(Intent data, Context context){
+		Uri selectedImage = data.getData(); 
+		String[] filePathColumn = { MediaStore.Images.Media.DATA }; 
+		Cursor cursor = context.getContentResolver().query(selectedImage,filePathColumn, null, null, null); 
+		cursor.moveToFirst(); 
+		int columnIndex = cursor.getColumnIndex(filePathColumn[0]); 
+		String picturePath = cursor.getString(columnIndex); 
+		cursor.close(); 
+		return BitmapFactory.decodeFile(picturePath); }
+	
+
+}

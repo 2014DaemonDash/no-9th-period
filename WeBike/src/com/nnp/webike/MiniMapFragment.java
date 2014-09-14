@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
@@ -132,6 +133,7 @@ public class MiniMapFragment extends SupportMapFragment implements
 
 		map.setOnMarkerClickListener(this);
 		map.clear();
+		Data.bikelist = new ArrayList<Bike>();
 
 		markers = new HashMap<Marker, Bike>();
 		for (Bike b : Data.bikelist) {

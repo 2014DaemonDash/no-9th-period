@@ -13,18 +13,27 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 	EditText comboET, descET;
@@ -98,6 +107,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 			super.onPostExecute(result);
 		}
 	}
+	Bitmap image;
 
 	@Override
 	public void onClick(View v) {
@@ -128,7 +138,27 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 				e.printStackTrace();
 			}
 			break;
+		case R.id.selectimage:
+			//Intent intent = new Intent();
+			//intent.setType("image/*");
+			//intent.setAction(Intent.ACTION_GET_CONTENT);
+			//startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);/*
+			Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			startActivityForResult(i,1);
+			UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+			imagePicker.delegate = self;
+			[self presentModalViewController:imagePicker animated:YES];
+			/*
+			Intent intent = new Intent(getActivity(), GetImageActivity.class);
+			startActivity(intent);
+			image = GetImageActivity.getSelectedImage();
+			break;*/
+
+
+
 		}
+		
 
 	}
+
 }
