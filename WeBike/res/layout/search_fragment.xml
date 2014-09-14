@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <FrameLayout
+        android:id="@+id/map_window"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/popup" />
+
+    <RelativeLayout
+        android:id="@+id/popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:background="#EEEEEE" >
+
+        <TextView
+            android:layout_margin="5dp"
+            android:id="@+id/search_bikedesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button android:id="@+id/search_checkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rentbike"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+</RelativeLayout>

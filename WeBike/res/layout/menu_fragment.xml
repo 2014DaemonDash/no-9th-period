@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/menu_email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/bikes_search_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:text="@string/bikesNearbyStr" />
+
+    <Button
+        android:id="@+id/bikes_leave_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:text="@string/bikesLeaveStr"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/register_bike_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:text="@string/bikesRegsiterStr" />
+
+    <Button
+        android:id="@+id/find_bike_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:text="@string/findMyBikeStr" />
+
+</LinearLayout>

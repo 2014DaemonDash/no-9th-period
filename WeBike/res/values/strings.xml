@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WeBike</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="bikesNearbyStr">Find Bikes Nearby</string>
+    <string name="bikesRegsiterStr">Register New Bike</string>
+    <string name="bikesLeaveStr">Leave Bike</string>
+    <string name="findMyBikeStr">Find My Bike</string>
+    <string name="rentbike">Check Out</string>
+    
+    <string name="ok">Okay</string>
+    <string name="cancel">Cancel</string>
+    <string name="unlock_text">Unlock with:</string>
+    <string name="leave_text">Lock bike with:</string>
+    
+    <string name="register_combo">Lock Combination</string>
+    <string name="register_description">Description</string>
+</resources>
