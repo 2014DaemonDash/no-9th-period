@@ -93,6 +93,9 @@ public class MiniMapFragment extends SupportMapFragment implements
 				e.printStackTrace();
 			}
 			String q = stringBuilder.toString();
+			
+			Data.bikelist = new ArrayList<Bike>();
+			
 			Log.i("webike", q);
 			try {
 				JSONObject root = new JSONObject(q);
@@ -133,7 +136,7 @@ public class MiniMapFragment extends SupportMapFragment implements
 
 		map.setOnMarkerClickListener(this);
 		map.clear();
-		Data.bikelist = new ArrayList<Bike>();
+		
 
 		markers = new HashMap<Marker, Bike>();
 		for (Bike b : Data.bikelist) {
